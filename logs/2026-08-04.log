@@ -1,0 +1,308 @@
+================================================================================
+Browser AI Agent
+================================================================================
+[2026-08-04T13:35:13.871Z] [INFO] [APP] Application started
+================================================================================
+New Request
+================================================================================
+[2026-08-04T13:38:08.598Z] [INFO] [USER] Navigate to https://ecommerce-playground.lambdatest.io/  and In the search box, type iPhone and click the Search button
+================================================================================
+Browser AI Agent
+================================================================================
+[2026-08-04T13:38:08.599Z] [INFO] [USER] Navigate to https://ecommerce-playground.lambdatest.io/  and In the search box, type iPhone and click the Search button
+[2026-08-04T13:38:08.599Z] [INFO] [AGENT] Invoking AI agent
+[2026-08-04T13:38:32.387Z] [INFO] [TOOL: ] navigate -> {url}
+[2026-08-04T13:38:52.320Z] [INFO] [STEP] #1 navigate (19933 ms)
+[2026-08-04T13:38:52.321Z] [INFO] [INPUT] {
+  "url": "https://ecommerce-playground.lambdatest.io/"
+}
+[2026-08-04T13:38:52.322Z] [INFO] [OUTPUT] {
+  "success": true,
+  "message": "Navigation completed.",
+  "data": {
+    "url": "https://ecommerce-playground.lambdatest.io/"
+  }
+}
+[2026-08-04T13:38:52.322Z] [SUCCESS] [STEP] navigate completed successfully
+[2026-08-04T13:38:52.322Z] [SUCCESS] [TOOL] Navigation completed: https://ecommerce-playground.lambdatest.io/
+[2026-08-04T13:39:01.879Z] [INFO] [TOOL] find_element -> description="search input box"
+[2026-08-04T13:39:02.380Z] [INFO] [STEP] #2 find_element (501 ms)
+[2026-08-04T13:39:02.381Z] [INFO] [INPUT] {
+  "description": "search input box"
+}
+[2026-08-04T13:39:02.381Z] [INFO] [OUTPUT] {
+  "success": false,
+  "message": "Element not found.",
+  "data": {
+    "searchedFor": "search input box"
+  }
+}
+[2026-08-04T13:39:02.381Z] [ERROR] [STEP] find_element failed
+[2026-08-04T13:39:02.381Z] [ERROR] [TOOL] Element not found: search input box
+[2026-08-04T13:39:17.556Z] [INFO] [TOOL] fill -> locator="//input[@placeholder='Search here...']", text="iPhone"
+[2026-08-04T13:39:47.582Z] [INFO] [STEP] #3 fill (30026 ms)
+[2026-08-04T13:39:47.583Z] [INFO] [INPUT] {
+  "locator": "//input[@placeholder='Search here...']",
+  "text": "iPhone"
+}
+[2026-08-04T13:39:47.584Z] [INFO] [OUTPUT] {
+  "success": false,
+  "message": "Browser operation failed.",
+  "error": "locator.fill: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('//input[@placeholder=\\'Search here...\\']')\u001b[22m\n"
+}
+[2026-08-04T13:39:47.584Z] [ERROR] [STEP] fill failed
+[2026-08-04T13:39:47.584Z] [ERROR] [TOOL] Failed to fill element: //input[@placeholder='Search here...']
+[2026-08-04T13:40:09.974Z] [INFO] [TOOL] find_element -> description="search input box"
+[2026-08-04T13:40:10.183Z] [INFO] [STEP] #4 find_element (209 ms)
+[2026-08-04T13:40:10.184Z] [INFO] [INPUT] {
+  "description": "search input box"
+}
+[2026-08-04T13:40:10.185Z] [INFO] [OUTPUT] {
+  "success": false,
+  "message": "Element not found.",
+  "data": {
+    "searchedFor": "search input box"
+  }
+}
+[2026-08-04T13:40:10.185Z] [ERROR] [STEP] find_element failed
+[2026-08-04T13:40:10.185Z] [ERROR] [TOOL] Element not found: search input box
+[2026-08-04T13:40:37.009Z] [INFO] [TOOL] fill -> locator="input[placeholder='Search here...']", text="iPhone"
+[2026-08-04T13:40:53.414Z] [WARN] [APP] SIGINT received
+[2026-08-04T13:40:53.415Z] [INFO] [APP] Shutting down Browser AI Agent
+[2026-08-04T13:40:53.416Z] [INFO] [APP] Closing browser session
+[2026-08-04T13:40:53.419Z] [INFO] [STEP] #5 fill (16410 ms)
+[2026-08-04T13:40:53.420Z] [INFO] [INPUT] {
+  "locator": "input[placeholder='Search here...']",
+  "text": "iPhone"
+}
+[2026-08-04T13:40:53.420Z] [INFO] [OUTPUT] {
+  "success": false,
+  "message": "Browser operation failed.",
+  "error": "locator.fill: Target page, context or browser has been closed"
+}
+[2026-08-04T13:40:53.420Z] [ERROR] [STEP] fill failed
+[2026-08-04T13:40:53.420Z] [ERROR] [TOOL] Failed to fill element: input[placeholder='Search here...']
+[2026-08-04T13:40:53.425Z] [SUCCESS] [APP] Browser session closed
+================================================================================
+Browser AI Agent
+================================================================================
+[2026-08-04T13:53:23.289Z] [INFO] [APP] Application started
+================================================================================
+New Request
+================================================================================
+[2026-08-04T13:53:43.229Z] [INFO] [USER] Navigate to https://ecommerce-playground.lambdatest.io/  and In the search box, type iPhone and click the Search button
+================================================================================
+Browser AI Agent
+================================================================================
+[2026-08-04T13:53:43.231Z] [INFO] [USER] Navigate to https://ecommerce-playground.lambdatest.io/  and In the search box, type iPhone and click the Search button
+[2026-08-04T13:53:43.231Z] [INFO] [AGENT] Invoking AI agent
+[2026-08-04T13:54:04.224Z] [INFO] [TOOL: ] navigate -> {url}
+[2026-08-04T13:54:22.962Z] [INFO] [STEP] #1 navigate (18738 ms)
+[2026-08-04T13:54:22.963Z] [INFO] [INPUT] {
+  "url": "https://ecommerce-playground.lambdatest.io/"
+}
+[2026-08-04T13:54:22.964Z] [INFO] [OUTPUT] {
+  "success": true,
+  "message": "Navigation completed.",
+  "data": {
+    "url": "https://ecommerce-playground.lambdatest.io/"
+  }
+}
+[2026-08-04T13:54:22.964Z] [SUCCESS] [STEP] navigate completed successfully
+[2026-08-04T13:54:22.964Z] [SUCCESS] [TOOL] Navigation completed: https://ecommerce-playground.lambdatest.io/
+[2026-08-04T13:54:35.335Z] [INFO] [TOOL] find_element -> description="search input box"
+[2026-08-04T13:54:35.667Z] [INFO] [STEP] #2 find_element (332 ms)
+[2026-08-04T13:54:35.668Z] [INFO] [INPUT] {
+  "description": "search input box"
+}
+[2026-08-04T13:54:35.669Z] [INFO] [OUTPUT] {
+  "success": false,
+  "message": "Element not found.",
+  "data": {
+    "searchedFor": "search input box"
+  }
+}
+[2026-08-04T13:54:35.669Z] [ERROR] [STEP] find_element failed
+[2026-08-04T13:54:35.669Z] [ERROR] [TOOL] Element not found: search input box
+[2026-08-04T13:54:59.519Z] [INFO] [TOOL] find_element -> description="search box placeholder"
+[2026-08-04T13:54:59.783Z] [INFO] [STEP] #3 find_element (264 ms)
+[2026-08-04T13:54:59.783Z] [INFO] [INPUT] {
+  "description": "search box placeholder"
+}
+[2026-08-04T13:54:59.784Z] [INFO] [OUTPUT] {
+  "success": false,
+  "message": "Element not found.",
+  "data": {
+    "searchedFor": "search box placeholder"
+  }
+}
+[2026-08-04T13:54:59.784Z] [ERROR] [STEP] find_element failed
+[2026-08-04T13:54:59.784Z] [ERROR] [TOOL] Element not found: search box placeholder
+[2026-08-04T13:55:07.883Z] [INFO] [TOOL] get_page_content
+[2026-08-04T13:55:07.924Z] [INFO] [STEP] #4 get_page_content (41 ms)
+[2026-08-04T13:55:07.924Z] [INFO] [INPUT] {}
+[2026-08-04T13:55:07.925Z] [INFO] [OUTPUT] {
+  "success": true,
+  "message": "Page content retrieved.",
+  "data": "Top categories\nComponents\nCameras\nPhone, Tablets & Ipod\nSoftware\nMP3 Players\nLaptops & Notebooks\nDesktops and Monitors\nPrinters & Scanners\nMice and Trackballs\nFashion and Accessories\nBeauty and Saloon\nAutoparts and Accessories\nWashing machine\nGaming consoles\nAir conditioner\nWeb Cameras\nQuick Links\nSpecial\nHot\nWishlist\nCompare\nMy account\nBlog\nTracking\nContact us\n\nPlace here any module, widget, design or HTML. for example menu, categories\n\nCart\n\nYour shopping cart is empty!\n\nSub-Total:\t$0.00\nTotal:\t$0.00\nEdit cart\nCheckout\nAll Categories\nSEARCH\n0\nShop by Category\nHome\nSpecial\nHot\nBlog\nMega Menu\nAddOns\nFeatured\nMy account\n\nThis is a dummy website for Web Automation Testing\n\nUpto 50% Off on Fully Automatic Top Load Washing Machine\n\nMany variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected.\n\nSHOP NOW\nTOP TRENDING CATEGORIES\nDesktops\nLaptops\nComponents\nTablets\nSoftware\nPhones & PDAs\nCameras\nMP3 Players\nTOP PRODUCTS\niMac\n$170.00\niMac\n$170.00\niMac\n$170.00\niMac\n$170.00\nHTC Touch HD\n$146.00\nHTC Touch HD\n$146.00\nHTC Touch HD\n$146.00\nHTC Touch HD\n$146.00\nHP LP3065\n$122.00\nHP LP3065\n$122.00\nLatest Range of Earphones\nSave 10% Off\nShop Now\nUpto 30% Off on Popular Smartphones + Exchange Offers\nSHOP NOW\nTOP COLLECTION\nPOPULAR\nLATEST\nBEST SELLER\n \nCanon EOS 5D\n$134.00\nHTC Touch HD\n$146.00\nApple Cinema 30\"\n$122.00\nHP LP3065\n$122.00\niPod Nano\n$122.00\niPhone\n$123.20\nPalm Treo Pro\n$337.99\niPod Touch\n$194.00\niPod Shuffle\n$182.00\nNikon D300\n$98.00\nMacBook Pro\n$2,000.00\niMac\n$170.00\nSamsung SyncMaster 941BW\n$242.00\nMacBook\n$602.00\nHTC Touch HD\n$146.00\nMacBook Air\n$1,202.00\nSony VAIO\n$1,202.00\nSamsung Galaxy Tab 10.1\n$241.99\niPod Classic\n$122.00\niMac\n$170.00\nApple Cinema 30\"\n$122.00\nApple Cinema 30\"\n$122.00\nApple Cinema 30\"\n$122.00\nApple Cinema 30\"\n$122.00\nUNDER @99\nNikon D300\n$98.00\nNikon D300\n$98.00\nFROM THE BLOG\nMark Jecno\n 1402 comments\n 38442\n25 Feb 2019\nAmet volutpat consequat mauris nunc congue nisi vitae suscipit tellus\nJolio Balia\n 68 comments\n 30310\n25 Feb 2019\nEget nunc lobortis mattis aliquam faucibus purus in massa tempor\nMark Jecno\n 58 comments\n 10427\n25 Feb 2019\nAmet volutpat consequat mauris nunc congue nisi vitae suscipit tellus\nMark Jecno\n 25 comments\n 10233\n25 Feb 2019\nAmet volutpat consequat mauris nunc congue nisi vitae suscipit tellus\nMark Jecno\n 127 comments\n 10575\n25 Feb 2019\nAmet volutpat consequat mauris nunc congue nisi vitae suscipit tellus\nJolio Balia\n 80 comments\n 9886\n25 Feb 2019\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor\nMark Jecno\n 4 comments\n 10521\n25 Feb 2019\nAmet volutpat consequat mauris nunc congue nisi vitae suscipit tellus\nJolio Balia\n 14 comments\n 9571\n25 Feb 2019\nEget nunc lobortis mattis aliquam faucibus purus in massa tempor\nJolio Balia\n 3 comments\n 9586\n25 Feb 2019\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor\nJolio Balia\n 0 comments\n 9994\n25 Feb 2019\nEget nunc lobortis mattis aliquam faucibus purus in massa tempor\n\n© LambdaTest - Powered by OpenCart"
+}
+[2026-08-04T13:55:07.925Z] [SUCCESS] [STEP] get_page_content completed successfully
+[2026-08-04T13:55:07.925Z] [SUCCESS] [TOOL] Page content retrieved successfully
+[2026-08-04T13:55:40.588Z] [INFO] [TOOL] find_element -> description="input[type='search']"
+[2026-08-04T13:55:40.803Z] [INFO] [STEP] #5 find_element (215 ms)
+[2026-08-04T13:55:40.804Z] [INFO] [INPUT] {
+  "description": "input[type='search']"
+}
+[2026-08-04T13:55:40.804Z] [INFO] [OUTPUT] {
+  "success": false,
+  "message": "Element not found.",
+  "data": {
+    "searchedFor": "input[type='search']"
+  }
+}
+[2026-08-04T13:55:40.805Z] [ERROR] [STEP] find_element failed
+[2026-08-04T13:55:40.805Z] [ERROR] [TOOL] Element not found: input[type='search']
+[2026-08-04T13:56:31.442Z] [INFO] [TOOL] find_element -> description="SEARCH button"
+[2026-08-04T13:56:31.643Z] [INFO] [STEP] #6 find_element (201 ms)
+[2026-08-04T13:56:31.644Z] [INFO] [INPUT] {
+  "description": "SEARCH button"
+}
+[2026-08-04T13:56:31.644Z] [INFO] [OUTPUT] {
+  "success": false,
+  "message": "Element not found.",
+  "data": {
+    "searchedFor": "SEARCH button"
+  }
+}
+[2026-08-04T13:56:31.644Z] [ERROR] [STEP] find_element failed
+[2026-08-04T13:56:31.645Z] [ERROR] [TOOL] Element not found: SEARCH button
+[2026-08-04T13:57:07.400Z] [INFO] [TOOL] find_element -> description="SEARCH link"
+[2026-08-04T13:57:07.613Z] [INFO] [STEP] #7 find_element (213 ms)
+[2026-08-04T13:57:07.613Z] [INFO] [INPUT] {
+  "description": "SEARCH link"
+}
+[2026-08-04T13:57:07.614Z] [INFO] [OUTPUT] {
+  "success": false,
+  "message": "Element not found.",
+  "data": {
+    "searchedFor": "SEARCH link"
+  }
+}
+[2026-08-04T13:57:07.614Z] [ERROR] [STEP] find_element failed
+[2026-08-04T13:57:07.614Z] [ERROR] [TOOL] Element not found: SEARCH link
+[2026-08-04T13:57:33.617Z] [INFO] [TOOL] find_element -> description="SEARCH link in uppercase"
+[2026-08-04T13:57:33.870Z] [INFO] [STEP] #8 find_element (253 ms)
+[2026-08-04T13:57:33.870Z] [INFO] [INPUT] {
+  "description": "SEARCH link in uppercase"
+}
+[2026-08-04T13:57:33.870Z] [INFO] [OUTPUT] {
+  "success": false,
+  "message": "Element not found.",
+  "data": {
+    "searchedFor": "SEARCH link in uppercase"
+  }
+}
+[2026-08-04T13:57:33.870Z] [ERROR] [STEP] find_element failed
+[2026-08-04T13:57:33.870Z] [ERROR] [TOOL] Element not found: SEARCH link in uppercase
+[2026-08-04T13:58:06.643Z] [INFO] [TOOL] find_element -> description="input[type='text']"
+[2026-08-04T13:58:06.874Z] [INFO] [STEP] #9 find_element (231 ms)
+[2026-08-04T13:58:06.876Z] [INFO] [INPUT] {
+  "description": "input[type='text']"
+}
+[2026-08-04T13:58:06.876Z] [INFO] [OUTPUT] {
+  "success": true,
+  "message": "Element found.",
+  "data": {
+    "strategy": "css-xpath",
+    "locator": "input[type='text']"
+  }
+}
+[2026-08-04T13:58:06.876Z] [SUCCESS] [STEP] find_element completed successfully
+[2026-08-04T13:58:06.877Z] [SUCCESS] [TOOL] Element found: input[type='text']
+[2026-08-04T13:58:23.170Z] [INFO] [TOOL] fill -> locator="input[type='text']", text="iPhone"
+[2026-08-04T13:58:23.296Z] [INFO] [STEP] #10 fill (126 ms)
+[2026-08-04T13:58:23.298Z] [INFO] [INPUT] {
+  "locator": "input[type='text']",
+  "text": "iPhone"
+}
+[2026-08-04T13:58:23.298Z] [INFO] [OUTPUT] {
+  "success": false,
+  "message": "Browser operation failed.",
+  "error": "locator.fill: Error: strict mode violation: locator('input[type=\\'text\\']') resolved to 2 elements:\n    1) <input value=\"\" type=\"text\" name=\"search\" autocomplete=\"off\" data-autocomplete=\"5\" aria-label=\"Search For Products\" placeholder=\"Search For Products\" data-autocomplete_route=\"extension/maza/product/product/autocomplete\"/> aka getByRole('textbox', { name: 'Search For Products' })\n    2) <input value=\"\" type=\"text\" name=\"search\" aria-label=\"Search For Products\" placeholder=\"Search For Products\"/> aka locator('#entry_217836').getByPlaceholder('Search For Products')\n\nCall log:\n\u001b[2m  - waiting for locator('input[type=\\'text\\']')\u001b[22m\n"
+}
+[2026-08-04T13:58:23.299Z] [ERROR] [STEP] fill failed
+[2026-08-04T13:58:23.299Z] [ERROR] [TOOL] Failed to fill element: input[type='text']
+[2026-08-04T13:59:34.415Z] [INFO] [TOOL] fill -> locator="input[autocomplete='off']", text="iPhone"
+[2026-08-04T13:59:34.477Z] [INFO] [STEP] #11 fill (62 ms)
+[2026-08-04T13:59:34.477Z] [INFO] [INPUT] {
+  "locator": "input[autocomplete='off']",
+  "text": "iPhone"
+}
+[2026-08-04T13:59:34.478Z] [INFO] [OUTPUT] {
+  "success": true,
+  "message": "Text entered."
+}
+[2026-08-04T13:59:34.478Z] [SUCCESS] [STEP] fill completed successfully
+[2026-08-04T13:59:34.478Z] [SUCCESS] [TOOL] Filled element: input[autocomplete='off']
+[2026-08-04T13:59:58.236Z] [INFO] [TOOL] find_element -> description="SEARCH button in uppercase"
+[2026-08-04T13:59:58.456Z] [INFO] [STEP] #12 find_element (220 ms)
+[2026-08-04T13:59:58.457Z] [INFO] [INPUT] {
+  "description": "SEARCH button in uppercase"
+}
+[2026-08-04T13:59:58.458Z] [INFO] [OUTPUT] {
+  "success": false,
+  "message": "Element not found.",
+  "data": {
+    "searchedFor": "SEARCH button in uppercase"
+  }
+}
+[2026-08-04T13:59:58.459Z] [ERROR] [STEP] find_element failed
+[2026-08-04T13:59:58.459Z] [ERROR] [TOOL] Element not found: SEARCH button in uppercase
+[2026-08-04T14:00:10.885Z] [ERROR] [AGENT] Agent execution failed.
+GraphRecursionError: Recursion limit of 25 reached without hitting a stop condition. You can increase the limit by setting the "recursionLimit" config key.
+
+Troubleshooting URL: https://docs.langchain.com/oss/javascript/langgraph/GRAPH_RECURSION_LIMIT/
+
+    at CompiledStateGraph._runLoop (/Users/faisalkhatri/github/browser-ai-agent/node_modules/@langchain/langgraph/src/pregel/index.ts:2643:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at async createAndRunLoop (/Users/faisalkhatri/github/browser-ai-agent/node_modules/@langchain/langgraph/src/pregel/index.ts:2453:9)
+================================================================================
+Execution Summary
+================================================================================
+[2026-08-04T14:00:10.887Z] [INFO] [SUMMARY] Step 1: navigate | SUCCESS | 18738 ms
+[2026-08-04T14:00:10.887Z] [INFO] [SUMMARY] Step 2: find_element | FAILED | 332 ms
+[2026-08-04T14:00:10.887Z] [INFO] [SUMMARY] Step 3: find_element | FAILED | 264 ms
+[2026-08-04T14:00:10.887Z] [INFO] [SUMMARY] Step 4: get_page_content | SUCCESS | 41 ms
+[2026-08-04T14:00:10.887Z] [INFO] [SUMMARY] Step 5: find_element | FAILED | 215 ms
+[2026-08-04T14:00:10.887Z] [INFO] [SUMMARY] Step 6: find_element | FAILED | 201 ms
+[2026-08-04T14:00:10.887Z] [INFO] [SUMMARY] Step 7: find_element | FAILED | 213 ms
+[2026-08-04T14:00:10.887Z] [INFO] [SUMMARY] Step 8: find_element | FAILED | 253 ms
+[2026-08-04T14:00:10.887Z] [INFO] [SUMMARY] Step 9: find_element | SUCCESS | 231 ms
+[2026-08-04T14:00:10.887Z] [INFO] [SUMMARY] Step 10: fill | FAILED | 126 ms
+[2026-08-04T14:00:10.887Z] [INFO] [SUMMARY] Step 11: fill | SUCCESS | 62 ms
+[2026-08-04T14:00:10.887Z] [INFO] [SUMMARY] Step 12: find_element | FAILED | 220 ms
+[2026-08-04T14:00:10.887Z] [INFO] [SUMMARY] Total Steps: 12
+[2026-08-04T14:00:10.887Z] [ERROR] [APP] Request failed
+GraphRecursionError: Recursion limit of 25 reached without hitting a stop condition. You can increase the limit by setting the "recursionLimit" config key.
+
+Troubleshooting URL: https://docs.langchain.com/oss/javascript/langgraph/GRAPH_RECURSION_LIMIT/
+
+    at CompiledStateGraph._runLoop (/Users/faisalkhatri/github/browser-ai-agent/node_modules/@langchain/langgraph/src/pregel/index.ts:2643:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at async createAndRunLoop (/Users/faisalkhatri/github/browser-ai-agent/node_modules/@langchain/langgraph/src/pregel/index.ts:2453:9)
+[2026-08-04T14:00:37.047Z] [INFO] [APP] Shutting down Browser AI Agent
+[2026-08-04T14:00:37.048Z] [INFO] [APP] Closing browser session
+[2026-08-04T14:00:37.052Z] [SUCCESS] [APP] Browser session closed
+[2026-08-04T14:00:37.052Z] [INFO] [APP] Application stopped
+[2026-08-04T14:00:37.053Z] [ERROR] [APP] Unhandled application exception
+AbortError: Aborted with Ctrl+C
+    at [_ttyWrite] (node:internal/readline/interface:1148:37)
+    at ReadStream.onkeypress (node:internal/readline/interface:271:20)
+    at ReadStream.emit (node:events:519:28)
+    at emitKeys (node:internal/readline/utils:370:14)
+    at emitKeys.next (<anonymous>)
+    at ReadStream.onData (node:internal/readline/emitKeypressEvents:64:36)
+    at ReadStream.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)

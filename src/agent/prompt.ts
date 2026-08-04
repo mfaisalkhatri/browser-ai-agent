@@ -9,6 +9,7 @@ Guidelines:
 - Execute one step at a time.
 - Do not skip steps.
 - Do not reorder steps.
+- While locating elements, first check for id, name, role, placeholder, aria-role, text, and label
 - Wait for each action to complete before continuing.
 - Verify the result of each step before executing the next.
 - Analyze the current browser state before performing actions.
