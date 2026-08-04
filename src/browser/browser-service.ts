@@ -59,10 +59,7 @@ export class BrowserService {
     }
   }
 
-  async fill(
-    locator: string,
-    text: string
-  ): Promise<BrowserResult> {
+  async fill(locator: string, text: string): Promise<BrowserResult> {
     await this.ensureSession();
 
     try {
@@ -92,9 +89,7 @@ export class BrowserService {
     }
   }
 
-  async extractText(
-    locator: string
-  ): Promise<BrowserResult> {
+  async extractText(locator: string): Promise<BrowserResult> {
     await this.ensureSession();
 
     try {
@@ -113,13 +108,20 @@ export class BrowserService {
   async getTitle(): Promise<BrowserResult> {
     await this.ensureSession();
 
-    return {
-      success: true,
-      message: "Title retrieved.",
-      data: await this.session!.page.title(),
-    };
-  }
+    try {
+      const page = this.session!.page;
+      await page.waitForLoadState("domcontentloaded");
+      await page.waitForFunction(() => document.title.length > 0);
 
+      return {
+        success: true,
+        message: "Title retrieved.",
+        data: await page.title(),
+      };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
   async getUrl(): Promise<BrowserResult> {
     await this.ensureSession();
 
@@ -149,7 +151,6 @@ export class BrowserService {
     }
   }
 
-
   async getPageContent(): Promise<BrowserResult> {
     await this.ensureSession();
 
@@ -166,10 +167,7 @@ export class BrowserService {
     }
   }
 
-
-  async findElement(
-    description: string
-  ): Promise<BrowserResult> {
+  async findElement(description: string): Promise<BrowserResult> {
     await this.ensureSession();
 
     const page = this.session!.page;
@@ -207,13 +205,9 @@ export class BrowserService {
       },
     ];
 
-
     for (const strategy of strategies) {
-
       try {
-
-        if (await strategy.locator.count() > 0) {
-
+        if ((await strategy.locator.count()) > 0) {
           return {
             success: true,
             message: "Element found.",
@@ -222,15 +216,11 @@ export class BrowserService {
               locator: description,
             },
           };
-
         }
-
       } catch {
         continue;
       }
-
     }
-
 
     return {
       success: false,
@@ -241,33 +231,23 @@ export class BrowserService {
     };
   }
 
-
   private async ensureSession(): Promise<void> {
     if (!this.session) {
       await this.start();
     }
   }
 
-
   private resolveLocator(locator: string) {
-
     const page = this.session!.page;
 
     return page.locator(locator);
-
   }
 
-
   private handleError(error: unknown): BrowserResult {
-
     return {
       success: false,
       message: "Browser operation failed.",
-      error:
-        error instanceof Error
-          ? error.message
-          : "Unknown error",
+      error: error instanceof Error ? error.message : "Unknown error",
     };
-
   }
 }

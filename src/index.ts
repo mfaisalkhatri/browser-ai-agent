@@ -38,9 +38,29 @@ async function main(): Promise<void> {
   process.on("SIGINT", shutdown);
   process.on("SIGTERM", shutdown);
 
+async function readPrompt(
+  rl: readline.Interface
+): Promise<string> {
+  console.log("\nEnter your prompt (type END on a new line to submit):");
+
+  const lines: string[] = [];
+
+  while (true) {
+    const line = await rl.question("");
+
+    if (line.trim().toUpperCase() === "END") {
+      break;
+    }
+
+    lines.push(line);
+  }
+
+  return lines.join("\n").trim();
+}
+
   try {
     while (true) {
-      const userInput = await rl.question("> ");
+      const userInput = await readPrompt(rl);
 
       if (!userInput.trim()) {
         continue;

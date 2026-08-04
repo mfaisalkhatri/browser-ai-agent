@@ -1,8 +1,6 @@
 import { tool } from "langchain";
 
-import { BrowserService } from "../browser/browser-service.js";
-
-const browserService = new BrowserService();
+import { browserService } from "../browser/browser-instance.js";
 
 export const urlTool = tool(
   async () => {
