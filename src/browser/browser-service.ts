@@ -249,7 +249,7 @@ export class BrowserService {
     }
   }
 
-  private handleError(error: unknown): BrowserResult {
+  private handleError<T>(error: unknown): BrowserResult<T> {
     return {
       success: false,
       message: "Browser operation failed.",

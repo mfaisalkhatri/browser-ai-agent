@@ -1,0 +1,4 @@
+Navigate to https://ecommerce-playground.lambdatest.io/
+Enter "iPhone" into the search field next to "All Categories" button
+Click on the “Search” button next to the search field, and Wait for the results page to load
+Verify the page title contains "iPhone"
