@@ -1,9 +1,6 @@
 import { tool } from "langchain";
 import { z } from "zod";
-
-import { BrowserService } from "../browser/browser-service.js";
-
-const browserService = new BrowserService();
+import { browserService } from "../browser/browser-instance.js";
 
 export const screenshotTool = tool(
   async ({ path }) => {
@@ -17,5 +14,5 @@ export const screenshotTool = tool(
         .string()
         .describe("File path where the screenshot should be saved."),
     }),
-  }
+  },
 );

@@ -1,9 +1,6 @@
 import { tool } from "langchain";
 import { z } from "zod";
-
-import { BrowserService } from "../browser/browser-service.js";
-
-const browserService = new BrowserService();
+import { browserService } from "../browser/browser-instance.js";
 
 export const navigateTool = tool(
   async ({ url }) => {
@@ -15,5 +12,5 @@ export const navigateTool = tool(
     schema: z.object({
       url: z.string().describe("The URL to open in the browser."),
     }),
-  }
+  },
 );

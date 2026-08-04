@@ -1,9 +1,6 @@
 import { tool } from "langchain";
 import { z } from "zod";
-
-import { BrowserService } from "../browser/browser-service.js";
-
-const browserService = new BrowserService();
+import { browserService } from "../browser/browser-instance.js";
 
 export const pressTool = tool(
   async ({ key }) => {
@@ -17,5 +14,5 @@ export const pressTool = tool(
         .string()
         .describe("Keyboard key to press. Example: Enter, Escape, Tab."),
     }),
-  }
+  },
 );

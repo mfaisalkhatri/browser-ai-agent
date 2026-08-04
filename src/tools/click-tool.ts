@@ -1,9 +1,6 @@
 import { tool } from "langchain";
 import { z } from "zod";
-
-import { BrowserService } from "../browser/browser-service.js";
-
-const browserService = new BrowserService();
+import { browserService } from "../browser/browser-instance.js";
 
 export const clickTool = tool(
   async ({ locator }) => {
@@ -11,11 +8,12 @@ export const clickTool = tool(
   },
   {
     name: "click",
-    description: "Click an element on the current webpage using a Playwright locator.",
+    description:
+      "Click an element on the current webpage using a Playwright locator.",
     schema: z.object({
       locator: z
         .string()
         .describe("The Playwright locator of the element to click."),
     }),
-  }
+  },
 );

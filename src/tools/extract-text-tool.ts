@@ -1,9 +1,6 @@
 import { tool } from "langchain";
 import { z } from "zod";
-
-import { BrowserService } from "../browser/browser-service.js";
-
-const browserService = new BrowserService();
+import { browserService } from "../browser/browser-instance.js";
 
 export const extractTextTool = tool(
   async ({ locator }) => {
@@ -11,11 +8,14 @@ export const extractTextTool = tool(
   },
   {
     name: "extract_text",
-    description: "Extract visible text from an element using a Playwright locator.",
+    description:
+      "Extract visible text from an element using a Playwright locator.",
     schema: z.object({
       locator: z
         .string()
-        .describe("The Playwright locator of the element to extract text from."),
+        .describe(
+          "The Playwright locator of the element to extract text from.",
+        ),
     }),
-  }
+  },
 );

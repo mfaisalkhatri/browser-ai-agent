@@ -1,9 +1,6 @@
 import { tool } from "langchain";
 import { z } from "zod";
-
-import { BrowserService } from "../browser/browser-service.js";
-
-const browserService = new BrowserService();
+import { browserService } from "../browser/browser-instance.js";
 
 export const fillTool = tool(
   async ({ locator, text }) => {
@@ -16,9 +13,7 @@ export const fillTool = tool(
       locator: z
         .string()
         .describe("The Playwright locator of the input element."),
-      text: z
-        .string()
-        .describe("The text value to enter."),
+      text: z.string().describe("The text value to enter."),
     }),
-  }
+  },
 );

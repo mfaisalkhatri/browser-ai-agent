@@ -1,8 +1,5 @@
 import { tool } from "langchain";
-
-import { BrowserService } from "../browser/browser-service.js";
-
-const browserService = new BrowserService();
+import { browserService } from "../browser/browser-instance.js";
 
 export const closeBrowserTool = tool(
   async () => {
@@ -11,5 +8,5 @@ export const closeBrowserTool = tool(
   {
     name: "close_browser",
     description: "Close the current browser session.",
-  }
+  },
 );
