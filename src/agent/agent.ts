@@ -1,57 +1,50 @@
-import { ChatOllama } from "@langchain/ollama";
-import { createToolCallingAgent, AgentExecutor } from "langchain/agents/";
+import { createAgent } from "langchain";
 
-import { browserAgentPrompt } from "./prompt.js";
-import { browserTool } from "../tools/browser-tool.js";
+import { model } from "../llm/model.js";
+import { tools } from "../tools/index.js";
+import { SYSTEM_PROMPT } from "./prompt.js";
 
-export class BrowserAgent {
+export const agent = createAgent({
+  model,
+  tools,
+  systemPrompt: SYSTEM_PROMPT,
+});
 
-    private readonly executor: AgentExecutor;
+export async function invokeAgent(input: string): Promise<string> {
+  const result = await agent.invoke({
+    messages: [
+      {
+        role: "user",
+        content: input,
+      },
+    ],
+  });
 
-    constructor() {
+  const lastMessage = result.messages[result.messages.length - 1];
 
-        const llm = new ChatOllama({
+  if (!lastMessage) {
+    return "No response received from the agent.";
+  }
 
-            model: process.env.OLLAMA_MODEL ?? "qwen3:8b",
+  if (typeof lastMessage.content === "string") {
+    return lastMessage.content;
+  }
 
-            temperature: 0
+  if (Array.isArray(lastMessage.content)) {
+    return lastMessage.content
+      .map((item: any) => {
+        if (typeof item === "string") {
+          return item;
+        }
 
-        });
+        if (item.type === "text") {
+          return item.text;
+        }
 
-        const agent = createToolCallingAgent({
+        return "";
+      })
+      .join("\n");
+  }
 
-            llm,
-
-            tools: [browserTool],
-
-            prompt: browserAgentPrompt
-
-        });
-
-        this.executor = new AgentExecutor({
-
-            agent,
-
-            tools: [browserTool],
-
-            verbose: true
-
-        });
-
-    }
-
-    async run(input: string): Promise<string> {
-
-        const response = await this.executor.invoke({
-
-            input,
-
-            chat_history: []
-
-        });
-
-        return response.output;
-
-    }
-
+  return JSON.stringify(lastMessage.content, null, 2);
 }

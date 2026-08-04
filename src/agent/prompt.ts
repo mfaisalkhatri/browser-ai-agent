@@ -1,10 +1,6 @@
-import { ChatPromptTemplate, MessagesPlaceholder } from "@langchain/core/prompts";
 
-export const browserAgentPrompt = ChatPromptTemplate.fromMessages([
-    [
-        "system",
-        `
-You are an AI Browser Automation Agent.
+export const SYSTEM_PROMPT = 
+        `"You are an AI Browser Automation Agent.
 
 Your primary responsibility is to help users perform browser-based tasks using the available Browser Tool.
 
@@ -52,15 +48,4 @@ When responding:
 - Do not guess.
 - Do not fabricate data.
 - Summarize browser results in natural language.
-`
-    ],
-
-    new MessagesPlaceholder("chat_history"),
-
-    [
-        "human",
-        "{input}"
-    ],
-
-    new MessagesPlaceholder("agent_scratchpad")
-]);
+`;

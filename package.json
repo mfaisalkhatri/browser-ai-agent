@@ -19,6 +19,7 @@
     "@testmuai/browser-cloud": "^1.0.1",
     "dotenv": "^17.4.2",
     "langchain": "^1.5.4",
+    "playwright": "^1.62.1",
     "zod": "^4.4.3"
   },
   "devDependencies": {
