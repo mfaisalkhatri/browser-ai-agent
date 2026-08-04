@@ -5,38 +5,7 @@ import { stdin as input, stdout as output } from "node:process";
 
 import { invokeAgent } from "./agent/agent.js";
 import { browserService } from "./browser/browser-instance.js";
-
-async function main(): Promise<void> {
-  console.log("========================================");
-  console.log("       Browser AI Agent");
-  console.log("       Type 'exit' to quit");
-  console.log("========================================\n");
-
-  const rl = readline.createInterface({
-    input,
-    output,
-  });
-
-  const shutdown = async () => {
-    console.log("\nShutting down browser session...");
-
-    try {
-      await browserService.close();
-    } catch (error) {
-      console.error(
-        "Error closing browser:",
-        error instanceof Error
-          ? error.message
-          : error
-      );
-    } finally {
-      rl.close();
-      process.exit(0);
-    }
-  };
-
-  process.on("SIGINT", shutdown);
-  process.on("SIGTERM", shutdown);
+import { Logger } from "./utils/logger.js";
 
 async function readPrompt(
   rl: readline.Interface
@@ -58,51 +27,99 @@ async function readPrompt(
   return lines.join("\n").trim();
 }
 
+async function shutdown(
+  rl: readline.Interface
+): Promise<void> {
+  Logger.info("APP", "Shutting down Browser AI Agent");
+
   try {
-    while (true) {
-      const userInput = await readPrompt(rl);
-
-      if (!userInput.trim()) {
-        continue;
-      }
-
-      if (
-        ["exit", "quit"].includes(
-          userInput.trim().toLowerCase()
-        )
-      ) {
-        await shutdown();
-        break;
-      }
-
-      try {
-        const response = await invokeAgent(userInput);
-
-        console.log("\nAssistant:");
-        console.log(response);
-        console.log();
-
-      } catch (error) {
-        console.error(
-          "\nAgent Error:",
-          error instanceof Error
-            ? error.message
-            : error
-        );
-        console.log();
-      }
-    }
+    Logger.info("APP", "Closing browser session");
+    await browserService.close();
+    Logger.success("APP", "Browser session closed");
+  } catch (error) {
+    Logger.error(
+      "APP",
+      "Failed to close browser session",
+      error
+    );
   } finally {
     rl.close();
   }
 }
 
+async function main(): Promise<void> {
+  Logger.divider("Browser AI Agent");
+  Logger.info("APP", "Application started");
+
+  const rl = readline.createInterface({
+    input,
+    output,
+  });
+
+  process.on("SIGINT", async () => {
+    Logger.warn("APP", "SIGINT received");
+    await shutdown(rl);
+    process.exit(0);
+  });
+
+  process.on("SIGTERM", async () => {
+    Logger.warn("APP", "SIGTERM received");
+    await shutdown(rl);
+    process.exit(0);
+  });
+
+  try {
+    while (true) {
+      const prompt = await readPrompt(rl);
+
+      if (!prompt) {
+        continue;
+      }
+
+      const command = prompt.trim().toLowerCase();
+
+      if (command === "exit" || command === "quit") {
+        Logger.info("APP", "Exit requested");
+        break;
+      }
+
+      Logger.divider("New Request");
+      Logger.info("USER", prompt);
+
+      try {
+        const response = await invokeAgent(prompt);
+
+        console.log("\nAssistant:\n");
+        console.log(response);
+        console.log();
+
+        Logger.success("APP", "Request completed");
+      } catch (error) {
+        Logger.error(
+          "APP",
+          "Request failed",
+          error
+        );
+      }
+    }
+  } finally {
+    await shutdown(rl);
+    Logger.info("APP", "Application stopped");
+  }
+}
+
 main().catch(async (error) => {
-  console.error(error);
+  Logger.error(
+    "APP",
+    "Unhandled application exception",
+    error
+  );
 
   try {
     await browserService.close();
-  } finally {
-    process.exit(1);
+  } catch {
+    // Ignore cleanup errors
   }
+
+  process.exit(1);
 });
