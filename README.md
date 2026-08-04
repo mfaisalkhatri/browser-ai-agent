@@ -10,6 +10,23 @@ This project is designed as a modular foundation for building intelligent browse
 
 ---
 
+## Tech Stack
+
+| Category               | Technology           |
+| ---------------------- | -------------------- |
+| Language               | TypeScript           |
+| Runtime                | Node.js              |
+| AI Framework           | LangChain            |
+| Local LLM              | Ollama               |
+| Model                  | Qwen3:8b             |
+| Browser Automation     | Playwright           |
+| Browser Infrastructure | Browser Cloud        |
+| Validation             | Zod                  |
+| Environment Variables  | dotenv               |
+| CLI                    | Node.js Readline API |
+
+---
+
 ## Features
 
 * Command-line interface (CLI)
@@ -144,23 +161,6 @@ For multiline prompts, finish the input with:
 ```text
 END
 ```
-
----
-
-## Tech Stack
-
-| Category               | Technology           |
-| ---------------------- | -------------------- |
-| Language               | TypeScript           |
-| Runtime                | Node.js              |
-| AI Framework           | LangChain            |
-| Local LLM              | Ollama               |
-| Model                  | Qwen3:8b             |
-| Browser Automation     | Playwright           |
-| Browser Infrastructure | Browser Cloud        |
-| Validation             | Zod                  |
-| Environment Variables  | dotenv               |
-| CLI                    | Node.js Readline API |
 
 ---
 
