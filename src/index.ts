@@ -1,26 +1,53 @@
 import "dotenv/config";
-import { BrowserService } from "./browser/browser-service.js";
 
-async function main() {
+import readline from "node:readline/promises";
+import { stdin as input, stdout as output } from "node:process";
 
-  const browser = new BrowserService();
+import { invokeAgent } from "./agent/agent.js";
+
+async function main(): Promise<void> {
+  console.log("========================================");
+  console.log("   Browser AI Agent");
+  console.log("   Type 'exit' to quit");
+  console.log("========================================\n");
+
+  const rl = readline.createInterface({
+    input,
+    output,
+  });
 
   try {
+    while (true) {
+      const userInput = await rl.question("> ");
 
-    await browser.start();
+      if (!userInput.trim()) {
+        continue;
+      }
 
-    await browser.goto("https://github.com");
+      if (["exit", "quit"].includes(userInput.trim().toLowerCase())) {
+        break;
+      }
 
-    console.log("Title:", await browser.title());
+      try {
+        const response = await invokeAgent(userInput);
 
-    console.log("URL:", await browser.url());
-
+        console.log("\nAssistant:");
+        console.log(response);
+        console.log();
+      } catch (error) {
+        console.error(
+          "\nError:",
+          error instanceof Error ? error.message : error
+        );
+        console.log();
+      }
+    }
   } finally {
-
-    await browser.close();
-
+    rl.close();
   }
-
 }
 
-main().catch(console.error);
+main().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});
