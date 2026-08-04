@@ -2,14 +2,14 @@ import "dotenv/config";
 
 import readline from "node:readline/promises";
 import { stdin as input, stdout as output } from "node:process";
-import { browserService } from "./browser/browser-instance.js";
 
 import { invokeAgent } from "./agent/agent.js";
+import { browserService } from "./browser/browser-instance.js";
 
 async function main(): Promise<void> {
   console.log("========================================");
-  console.log("   Browser AI Agent");
-  console.log("   Type 'exit' to quit");
+  console.log("       Browser AI Agent");
+  console.log("       Type 'exit' to quit");
   console.log("========================================\n");
 
   const rl = readline.createInterface({
@@ -25,7 +25,9 @@ async function main(): Promise<void> {
     } catch (error) {
       console.error(
         "Error closing browser:",
-        error instanceof Error ? error.message : error,
+        error instanceof Error
+          ? error.message
+          : error
       );
     } finally {
       rl.close();
@@ -44,7 +46,11 @@ async function main(): Promise<void> {
         continue;
       }
 
-      if (["exit", "quit"].includes(userInput.trim().toLowerCase())) {
+      if (
+        ["exit", "quit"].includes(
+          userInput.trim().toLowerCase()
+        )
+      ) {
         await shutdown();
         break;
       }
@@ -55,10 +61,13 @@ async function main(): Promise<void> {
         console.log("\nAssistant:");
         console.log(response);
         console.log();
+
       } catch (error) {
         console.error(
-          "\n Agennt Error:",
-          error instanceof Error ? error.message : error,
+          "\nAgent Error:",
+          error instanceof Error
+            ? error.message
+            : error
         );
         console.log();
       }
