@@ -18,7 +18,8 @@
     "@langchain/ollama": "^1.3.0",
     "@testmuai/browser-cloud": "^1.0.1",
     "dotenv": "^17.4.2",
-    "langchain": "^1.5.4"
+    "langchain": "^1.5.4",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/node": "^26.1.2",
