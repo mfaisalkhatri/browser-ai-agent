@@ -1,10 +1,12 @@
 import { SessionManager } from "./session.js";
 import { BrowserSession } from "./types.js";
 import { BrowserResult } from "../models/browser-result.js";
+import { LocatorResolver } from "./locator-resolver.js";
 
 export class BrowserService {
   private readonly sessionManager = new SessionManager();
   private session?: BrowserSession;
+  private resolver?: LocatorResolver;
 
   async start(): Promise<void> {
     if (!this.session) {
@@ -48,32 +50,60 @@ export class BrowserService {
     await this.ensureSession();
 
     try {
-      await this.resolveLocator(locator).click();
+      const resolver = new LocatorResolver(this.session!.page);
+
+      const result = await resolver.resolve(locator);
+
+      if (!result.success || !result.resolved) {
+        return {
+          success: false,
+          message: result.message,
+        };
+      }
+
+      await result.resolved.locator.click();
 
       return {
         success: true,
         message: "Element clicked.",
+        data: {
+          strategy: result.resolved.strategy,
+          confidence: result.resolved.confidence,
+        },
       };
     } catch (error) {
       return this.handleError(error);
     }
   }
-
   async fill(locator: string, text: string): Promise<BrowserResult> {
     await this.ensureSession();
 
     try {
-      await this.resolveLocator(locator).fill(text);
+      const resolver = new LocatorResolver(this.session!.page);
+
+      const result = await resolver.resolve(locator);
+
+      if (!result.success || !result.resolved) {
+        return {
+          success: false,
+          message: result.message,
+        };
+      }
+
+      await result.resolved.locator.fill(text);
 
       return {
         success: true,
         message: "Text entered.",
+        data: {
+          strategy: result.resolved.strategy,
+          confidence: result.resolved.confidence,
+        },
       };
     } catch (error) {
       return this.handleError(error);
     }
   }
-
   async press(key: string): Promise<BrowserResult> {
     await this.ensureSession();
 
@@ -93,7 +123,18 @@ export class BrowserService {
     await this.ensureSession();
 
     try {
-      const text = await this.resolveLocator(locator).innerText();
+      const resolver = new LocatorResolver(this.session!.page);
+
+      const result = await resolver.resolve(locator);
+
+      if (!result.success || !result.resolved) {
+        return {
+          success: false,
+          message: result.message,
+        };
+      }
+
+      const text = await result.resolved.locator.innerText();
 
       return {
         success: true,
@@ -104,7 +145,6 @@ export class BrowserService {
       return this.handleError(error);
     }
   }
-
   async getTitle(): Promise<BrowserResult> {
     await this.ensureSession();
 
@@ -167,80 +207,46 @@ export class BrowserService {
     }
   }
 
-  async findElement(description: string): Promise<BrowserResult> {
+  async findElement(description: string): Promise<
+    BrowserResult<{
+      strategy: string;
+      confidence: number;
+      visible: boolean;
+      enabled: boolean;
+    }>
+  > {
     await this.ensureSession();
 
-    const page = this.session!.page;
+    try {
+      const resolver = new LocatorResolver(this.session!.page);
 
-    const strategies = [
-      {
-        name: "role-button",
-        locator: page.getByRole("button", {
-          name: description,
-        }),
-      },
-      {
-        name: "role-link",
-        locator: page.getByRole("link", {
-          name: description,
-        }),
-      },
-      {
-        name: "label",
-        locator: page.getByLabel(description),
-      },
-      {
-        name: "placeholder",
-        locator: page.getByPlaceholder(description),
-      },
-      {
-        name: "text",
-        locator: page.getByText(description, {
-          exact: false,
-        }),
-      },
-      {
-        name: "css-xpath",
-        locator: page.locator(description),
-      },
-    ];
+      const result = await resolver.resolve(description);
 
-    for (const strategy of strategies) {
-      try {
-        if ((await strategy.locator.count()) > 0) {
-          return {
-            success: true,
-            message: "Element found.",
-            data: {
-              strategy: strategy.name,
-              locator: description,
-            },
-          };
-        }
-      } catch {
-        continue;
+      if (!result.success || !result.resolved) {
+        return {
+          success: false,
+          message: result.message,
+        };
       }
+
+      return {
+        success: true,
+        message: "Element found.",
+        data: {
+          strategy: result.resolved.strategy,
+          confidence: result.resolved.confidence,
+          visible: result.resolved.visible,
+          enabled: result.resolved.enabled,
+        },
+      };
+    } catch (error) {
+      return this.handleError(error);
     }
-
-    return {
-      success: false,
-      message: "Element not found.",
-      data: {
-        searchedFor: description,
-      },
-    };
   }
-
   private async ensureSession(): Promise<void> {
     if (!this.session) {
       await this.start();
     }
-  }
-
-  private resolveLocator(locator: string) {
-    const page = this.session!.page;
-
-    return page.locator(locator);
   }
 
   private handleError(error: unknown): BrowserResult {

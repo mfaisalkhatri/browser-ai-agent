@@ -11,7 +11,7 @@ export const findElementTool = tool(
 
     Logger.info(
       "TOOL",
-      `find_element -> description="${description}"`
+      `find_element -> "${description}"`
     );
 
     const result = await browserService.findElement(description);
@@ -27,12 +27,12 @@ export const findElementTool = tool(
     if (result.success) {
       Logger.success(
         "TOOL",
-        `Element found: ${description}`
+        `Element resolved using '${result.data?.strategy}' strategy`
       );
     } else {
       Logger.error(
         "TOOL",
-        `Element not found: ${description}`
+        result.message
       );
     }
 
@@ -41,13 +41,11 @@ export const findElementTool = tool(
   {
     name: "find_element",
     description:
-      "Locate an element on the current webpage using semantic locators such as role, label, placeholder, text, or test id. If no semantic locator matches, fall back to CSS selector or XPath.",
+      "Find an element on the current page using a natural language description. The browser service automatically resolves the best locator strategy (role, label, placeholder, alt text, title, test id, text, CSS, or XPath).",
     schema: z.object({
       description: z
         .string()
-        .describe(
-          "Natural language description, semantic locator, CSS selector, or XPath of the element."
-        ),
+        .describe("Natural language description of the element to locate."),
     }),
   }
 );
