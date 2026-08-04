@@ -40,7 +40,7 @@ export class BrowserService {
         },
       };
     } catch (error) {
-      return this.error(error);
+      return this.handleError(error);
     }
   }
 
@@ -48,29 +48,32 @@ export class BrowserService {
     await this.ensureSession();
 
     try {
-      await this.session!.page.locator(locator).click();
+      await this.resolveLocator(locator).click();
 
       return {
         success: true,
         message: "Element clicked.",
       };
     } catch (error) {
-      return this.error(error);
+      return this.handleError(error);
     }
   }
 
-  async fill(locator: string, text: string): Promise<BrowserResult> {
+  async fill(
+    locator: string,
+    text: string
+  ): Promise<BrowserResult> {
     await this.ensureSession();
 
     try {
-      await this.session!.page.locator(locator).fill(text);
+      await this.resolveLocator(locator).fill(text);
 
       return {
         success: true,
         message: "Text entered.",
       };
     } catch (error) {
-      return this.error(error);
+      return this.handleError(error);
     }
   }
 
@@ -82,31 +85,20 @@ export class BrowserService {
 
       return {
         success: true,
-        message: `Key ${key} pressed.`,
+        message: `Pressed ${key}.`,
       };
     } catch (error) {
-      return this.error(error);
+      return this.handleError(error);
     }
   }
 
-  async wait(timeout: number): Promise<BrowserResult> {
-    await this.ensureSession();
-
-    await this.session!.page.waitForTimeout(timeout);
-
-    return {
-      success: true,
-      message: `Waited ${timeout}ms.`,
-    };
-  }
-
-  async extractText(locator: string): Promise<BrowserResult> {
+  async extractText(
+    locator: string
+  ): Promise<BrowserResult> {
     await this.ensureSession();
 
     try {
-      const text = await this.session!.page
-        .locator(locator)
-        .innerText();
+      const text = await this.resolveLocator(locator).innerText();
 
       return {
         success: true,
@@ -114,19 +106,17 @@ export class BrowserService {
         data: text,
       };
     } catch (error) {
-      return this.error(error);
+      return this.handleError(error);
     }
   }
 
   async getTitle(): Promise<BrowserResult> {
     await this.ensureSession();
 
-    const title = await this.session!.page.title();
-
     return {
       success: true,
       message: "Title retrieved.",
-      data: title,
+      data: await this.session!.page.title(),
     };
   }
 
@@ -141,8 +131,6 @@ export class BrowserService {
   }
 
   async screenshot(path: string): Promise<BrowserResult> {
-    await ensurePath(path);
-
     await this.ensureSession();
 
     try {
@@ -157,9 +145,102 @@ export class BrowserService {
         data: path,
       };
     } catch (error) {
-      return this.error(error);
+      return this.handleError(error);
     }
   }
+
+
+  async getPageContent(): Promise<BrowserResult> {
+    await this.ensureSession();
+
+    try {
+      const content = await this.session!.page.locator("body").innerText();
+
+      return {
+        success: true,
+        message: "Page content retrieved.",
+        data: content,
+      };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+
+
+  async findElement(
+    description: string
+  ): Promise<BrowserResult> {
+    await this.ensureSession();
+
+    const page = this.session!.page;
+
+    const strategies = [
+      {
+        name: "role-button",
+        locator: page.getByRole("button", {
+          name: description,
+        }),
+      },
+      {
+        name: "role-link",
+        locator: page.getByRole("link", {
+          name: description,
+        }),
+      },
+      {
+        name: "label",
+        locator: page.getByLabel(description),
+      },
+      {
+        name: "placeholder",
+        locator: page.getByPlaceholder(description),
+      },
+      {
+        name: "text",
+        locator: page.getByText(description, {
+          exact: false,
+        }),
+      },
+      {
+        name: "css-xpath",
+        locator: page.locator(description),
+      },
+    ];
+
+
+    for (const strategy of strategies) {
+
+      try {
+
+        if (await strategy.locator.count() > 0) {
+
+          return {
+            success: true,
+            message: "Element found.",
+            data: {
+              strategy: strategy.name,
+              locator: description,
+            },
+          };
+
+        }
+
+      } catch {
+        continue;
+      }
+
+    }
+
+
+    return {
+      success: false,
+      message: "Element not found.",
+      data: {
+        searchedFor: description,
+      },
+    };
+  }
+
 
   private async ensureSession(): Promise<void> {
     if (!this.session) {
@@ -167,7 +248,18 @@ export class BrowserService {
     }
   }
 
-  private error(error: unknown): BrowserResult {
+
+  private resolveLocator(locator: string) {
+
+    const page = this.session!.page;
+
+    return page.locator(locator);
+
+  }
+
+
+  private handleError(error: unknown): BrowserResult {
+
     return {
       success: false,
       message: "Browser operation failed.",
@@ -176,9 +268,6 @@ export class BrowserService {
           ? error.message
           : "Unknown error",
     };
-  }
-}
 
-async function ensurePath(path: string): Promise<void> {
-  return Promise.resolve();
+  }
 }

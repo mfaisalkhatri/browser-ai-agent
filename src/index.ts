@@ -2,6 +2,7 @@ import "dotenv/config";
 
 import readline from "node:readline/promises";
 import { stdin as input, stdout as output } from "node:process";
+import { browserService } from "./browser/browser-instance.js";
 
 import { invokeAgent } from "./agent/agent.js";
 
@@ -16,6 +17,25 @@ async function main(): Promise<void> {
     output,
   });
 
+  const shutdown = async () => {
+    console.log("\nShutting down browser session...");
+
+    try {
+      await browserService.close();
+    } catch (error) {
+      console.error(
+        "Error closing browser:",
+        error instanceof Error ? error.message : error,
+      );
+    } finally {
+      rl.close();
+      process.exit(0);
+    }
+  };
+
+  process.on("SIGINT", shutdown);
+  process.on("SIGTERM", shutdown);
+
   try {
     while (true) {
       const userInput = await rl.question("> ");
@@ -25,6 +45,7 @@ async function main(): Promise<void> {
       }
 
       if (["exit", "quit"].includes(userInput.trim().toLowerCase())) {
+        await shutdown();
         break;
       }
 
@@ -36,8 +57,8 @@ async function main(): Promise<void> {
         console.log();
       } catch (error) {
         console.error(
-          "\nError:",
-          error instanceof Error ? error.message : error
+          "\n Agennt Error:",
+          error instanceof Error ? error.message : error,
         );
         console.log();
       }
@@ -47,7 +68,12 @@ async function main(): Promise<void> {
   }
 }
 
-main().catch((error) => {
+main().catch(async (error) => {
   console.error(error);
-  process.exit(1);
+
+  try {
+    await browserService.close();
+  } finally {
+    process.exit(1);
+  }
 });
