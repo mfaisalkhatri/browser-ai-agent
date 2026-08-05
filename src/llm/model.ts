@@ -1,9 +1,10 @@
 import "dotenv/config";
 
 import { ChatOllama } from "@langchain/ollama";
+import { config } from "../config/config.js";
 
 export const model = new ChatOllama({
-  model: process.env.OLLAMA_MODEL ?? "qwen3:8b",
-  temperature: 0.2,
+  model: config.ollamaModel,
+  temperature: config.temperature,
   streaming: false,
 });
