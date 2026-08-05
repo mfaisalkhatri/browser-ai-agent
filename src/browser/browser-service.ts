@@ -195,12 +195,131 @@ export class BrowserService {
     await this.ensureSession();
 
     try {
-      const content = await this.session!.page.locator("body").innerText();
+      const page = this.session!.page;
+
+      const elements = await page.evaluate(() => {
+        function getLabel(element: Element): string | null {
+          const htmlElement = element as HTMLElement;
+
+          // <label for="id">
+          if (htmlElement.id) {
+            const label = document.querySelector(
+              `label[for="${CSS.escape(htmlElement.id)}"]`,
+            );
+            if (label?.textContent?.trim()) {
+              return label.textContent.trim();
+            }
+          }
+
+          // Wrapped by <label>
+          const parentLabel = htmlElement.closest("label");
+          if (parentLabel?.textContent?.trim()) {
+            return parentLabel.textContent.trim();
+          }
+
+          return null;
+        }
+
+        function isVisible(element: HTMLElement): boolean {
+          const style = window.getComputedStyle(element);
+
+          return (
+            style.display !== "none" &&
+            style.visibility !== "hidden" &&
+            style.opacity !== "0" &&
+            element.getClientRects().length > 0
+          );
+        }
+
+        const selectors = [
+          "input",
+          "button",
+          "textarea",
+          "select",
+          "a",
+          "[role]",
+          "[contenteditable]",
+        ];
+
+        const seen = new Set<Element>();
+
+        const nodes = selectors.flatMap((selector) =>
+          Array.from(document.querySelectorAll(selector)),
+        );
+
+        const elements = nodes
+          .filter((el) => {
+            if (seen.has(el)) {
+              return false;
+            }
+
+            seen.add(el);
+            return true;
+          })
+          .map((el) => {
+            const element = el as HTMLElement;
+
+            return {
+              tag: element.tagName.toLowerCase(),
+
+              role: element.getAttribute("role"),
+
+              type: element.getAttribute("type"),
+
+              id: element.id || null,
+
+              name: element.getAttribute("name"),
+
+              label: getLabel(element),
+
+              text:
+                element.innerText?.trim() || element.textContent?.trim() || "",
+
+              placeholder: element.getAttribute("placeholder"),
+
+              ariaLabel: element.getAttribute("aria-label"),
+
+              title: element.getAttribute("title"),
+
+              alt: element.getAttribute("alt"),
+
+              value:
+                element instanceof HTMLInputElement ||
+                element instanceof HTMLTextAreaElement
+                  ? element.value
+                  : null,
+
+              href: element.getAttribute("href"),
+
+              testId:
+                element.getAttribute("data-testid") ??
+                element.getAttribute("data-test") ??
+                element.getAttribute("data-cy"),
+
+              visible: isVisible(element),
+
+              disabled:
+                element instanceof HTMLButtonElement ||
+                element instanceof HTMLInputElement ||
+                element instanceof HTMLSelectElement ||
+                element instanceof HTMLTextAreaElement
+                  ? element.disabled
+                  : false,
+            };
+          });
+
+        return {
+          url: window.location.href,
+          title: document.title,
+          totalElements: elements.length,
+          elements,
+        };
+      });
 
       return {
         success: true,
-        message: "Page content retrieved.",
-        data: content,
+        message: "Interactive page snapshot retrieved.",
+        data: elements,
       };
     } catch (error) {
       return this.handleError(error);

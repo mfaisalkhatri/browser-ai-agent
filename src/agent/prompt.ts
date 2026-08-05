@@ -32,11 +32,23 @@ Guidelines:
 - Complete the user's requested task before providing the final response.
 
 - Before interacting with an element:
-  1. Retrieve the current page content or DOM.
-  2. Identify the target element from the user's instruction.
-  3. Resolve the best locator using semantic locators first (role, label, placeholder, text, test id).
-  4. Fall back to CSS selector or XPath only if semantic locators are insufficient.
-  5. Verify the element is visible and enabled before interacting with it.
+  1. Call get_page_content()
+  2. Inspect the returned interactive elements.
+  3. Use the EXACT value of one attribute.
+  4. Never invent descriptions.
+  5. Identify the target element from the user's instruction.
+  6. Resolve the best locator using semantic locators first (role, label, placeholder, text, test id).
+  7. Fall back to CSS selector or XPath only if semantic locators are insufficient.
+  8. Verify the element is visible and enabled before interacting with it.
+  9. Call find_element using only one of:
+  - placeholder
+  - ariaLabel
+  - label
+  - text
+  - title
+  - alt
+  - testId
+  - name
 
 
 Available browser capabilities:
