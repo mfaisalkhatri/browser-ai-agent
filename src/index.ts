@@ -1,39 +1,78 @@
 import "dotenv/config";
 
-import readline from "node:readline/promises";
-import { stdin as input, stdout as output } from "node:process";
+import fs from "node:fs/promises";
+import path from "node:path";
 
 import { invokeAgent } from "./agent/agent.js";
 import { browserService } from "./browser/browser-instance.js";
 import { Logger } from "./utils/logger.js";
 
-async function readPrompt(
-  rl: readline.Interface
-): Promise<string> {
-  console.log("\nEnter your prompt (type END on a new line to submit):");
+async function readPrompt(): Promise<string> {
+  const promptFile =
+    process.argv[2] ??
+    path.resolve(process.cwd(), "prompt.txt");
 
-  const lines: string[] = [];
+  Logger.info("APP", `Reading prompt from: ${promptFile}`);
 
-  while (true) {
-    const line = await rl.question("");
+  const prompt = await fs.readFile(promptFile, "utf8");
 
-    if (line.trim().toUpperCase() === "END") {
-      break;
-    }
-
-    lines.push(line);
-  }
-
-  return lines.join("\n").trim();
+  return prompt.trim();
 }
 
-async function shutdown(
-  rl: readline.Interface
-): Promise<void> {
+function parseExecutionSteps(prompt: string): string[] {
+  const normalized = prompt.replace(/\r\n/g, "\n").trim();
+
+  // Supports:
+  // Step 1:
+  // STEP 1:
+  const stepRegex = /Step\s+\d+\s*:/gi;
+
+  const matches = [...normalized.matchAll(stepRegex)];
+
+  if (matches.length > 0) {
+    const steps: string[] = [];
+
+    for (let i = 0; i < matches.length; i++) {
+      const start = matches[i].index! + matches[i][0].length;
+
+      const end =
+        i + 1 < matches.length
+          ? matches[i + 1].index!
+          : normalized.length;
+
+      const step = normalized.substring(start, end).trim();
+
+      if (step.length > 0) {
+        steps.push(step);
+      }
+    }
+
+    return steps;
+  }
+
+  // No "Step 1:" markers.
+  // Split by line and treat every non-empty line as a step.
+
+  return normalized
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0)
+    .filter((line) => {
+      const value = line.toLowerCase();
+
+      return !(
+        value.includes("close browser") ||
+        value.includes("close the browser") ||
+        value.includes("close browser session") ||
+        value.includes("close the browser session")
+      );
+    });
+}
+
+async function shutdown(): Promise<void> {
   Logger.info("APP", "Shutting down Browser AI Agent");
 
   try {
-    Logger.info("APP", "Closing browser session");
     await browserService.close();
     Logger.success("APP", "Browser session closed");
   } catch (error) {
@@ -42,8 +81,6 @@ async function shutdown(
       "Failed to close browser session",
       error
     );
-  } finally {
-    rl.close();
   }
 }
 
@@ -51,59 +88,69 @@ async function main(): Promise<void> {
   Logger.divider("Browser AI Agent");
   Logger.info("APP", "Application started");
 
-  const rl = readline.createInterface({
-    input,
-    output,
-  });
-
   process.on("SIGINT", async () => {
     Logger.warn("APP", "SIGINT received");
-    await shutdown(rl);
+    await shutdown();
     process.exit(0);
   });
 
   process.on("SIGTERM", async () => {
     Logger.warn("APP", "SIGTERM received");
-    await shutdown(rl);
+    await shutdown();
     process.exit(0);
   });
 
   try {
-    while (true) {
-      const prompt = await readPrompt(rl);
+    const prompt = await readPrompt();
 
-      if (!prompt) {
-        continue;
-      }
+    Logger.divider("New Request");
+    Logger.info("USER", prompt);
 
-      const command = prompt.trim().toLowerCase();
+    const steps = parseExecutionSteps(prompt);
 
-      if (command === "exit" || command === "quit") {
-        Logger.info("APP", "Exit requested");
-        break;
-      }
+    Logger.info(
+      "APP",
+      `Execution plan contains ${steps.length} step(s)`
+    );
 
-      Logger.divider("New Request");
-      Logger.info("USER", prompt);
+    for (let i = 0; i < steps.length; i++) {
+      const step = steps[i];
+
+      Logger.divider(`Executing Step ${i + 1}`);
+
+      Logger.info("STEP", step);
 
       try {
-        const response = await invokeAgent(prompt);
+        const response = await invokeAgent(`
+Execution Step ${i + 1} of ${steps.length}
 
-        console.log("\nAssistant:\n");
+Current Step:
+${step}
+
+Instructions:
+- Complete ONLY this step.
+- Do NOT perform future steps.
+- Use the existing browser session.
+- If navigation occurs, wait until the page is ready before continuing.
+- Return only the result for this step.
+`);
+
+        console.log(`\nStep ${i + 1} Response:\n`);
         console.log(response);
         console.log();
-
-        Logger.success("APP", "Request completed");
       } catch (error) {
         Logger.error(
-          "APP",
-          "Request failed",
+          "STEP",
+          `Step ${i + 1} failed`,
           error
         );
+        break;
       }
     }
+
+    Logger.success("APP", "Execution completed");
   } finally {
-    await shutdown(rl);
+    await shutdown();
     Logger.info("APP", "Application stopped");
   }
 }
