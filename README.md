@@ -4,7 +4,7 @@
 
 Browser AI Agent is a command-line AI-powered browser automation framework built with TypeScript. It combines a local Large Language Model (LLM) running on Ollama with LangChain and Browser Cloud to understand natural language instructions and perform browser interactions.
 
-The agent uses Browser Cloud to create and manage remote Playwright browser sessions while LangChain enables tool calling for browser operations such as navigation, typing, clicking, extracting information, and capturing screenshots.
+The agent uses Browser Cloud to create and manage remote Playwright browser sessions, while LangChain enables tool calling for browser operations such as navigation, typing, clicking, extracting information, and capturing screenshots.
 
 This project is designed as a modular foundation for building intelligent browser automation agents that can be extended with planning, verification, retries, memory, and additional browser tools.
 
@@ -65,6 +65,7 @@ Install dependencies:
 npm install
 ```
 
+
 Install and start Ollama:
 
 ```bash
@@ -111,12 +112,13 @@ npm start
 
 The prompt needs to be added to the `prompt.txt` file.
 
+### Prompt Example 1:
+
 ```text
 Navigate to https://https://ecommerce-playground.lambdatest.io/
 Verify the Page Title
 ```
-
-For multiline prompts, finish the input with:
+### Prompt Exampel 2:
 
 ```text
 Navigate to https://ecommerce-playground.lambdatest.io/
@@ -141,6 +143,11 @@ Verify the page title contains "iPhone"
 * Get Page Content
 
 ---
+
+## More details about Browser Cloud
+
+[TestMu AI Browser Cloud Cookbook](https://github.com/SparshKesari/browser-cloud-cookbook) - A collection of runnable examples and patterns for [TestMu AI Browser Cloud](https://www.testmuai.com/browser-cloud/) — scalable, headless browser sessions in the cloud that work with Playwright, Puppeteer, Selenium, and AI agent frameworks.
+
 
 ## :question: Need Assistance?
 
