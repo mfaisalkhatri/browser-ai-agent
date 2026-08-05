@@ -46,7 +46,7 @@ This project is designed as a modular foundation for building intelligent browse
 * Node.js 20+
 * npm
 * Ollama
-* Browser Cloud by Test Mu AI credentials (LambdaTest Username and Access Key)
+* Browser Cloud by TestMu AI credentials (LambdaTest Username and Access Key)
 
 ---
 
@@ -145,7 +145,7 @@ Verify the page title contains "iPhone"
 ## :question: Need Assistance?
 
 - Discuss your queries by writing to me @ `mohammadfaisalkhatri@gmail.com`
-  OR ping me on any of the social media sites using the below link:
+  OR ping me on any of the social media sites using the link below:
    - [Linktree](https://linktr.ee/faisalkhatri)
 
 ## :thought_balloon: Subscribe and Follow
