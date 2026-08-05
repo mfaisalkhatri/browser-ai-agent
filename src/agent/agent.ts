@@ -4,7 +4,6 @@ import { model } from "../llm/model.js";
 import { tools } from "../tools/index.js";
 import { SYSTEM_PROMPT } from "./prompt.js";
 import { Logger } from "../utils/logger.js";
-import { executionLog } from "../utils/execution-log.js";
 
 export const agent = createAgent({
   model,
@@ -12,12 +11,7 @@ export const agent = createAgent({
   systemPrompt: SYSTEM_PROMPT,
 });
 
-export async function invokeAgent(
-  input: string
-): Promise<string> {
-  executionLog.reset();
-  executionLog.startRun(input);
-
+export async function invokeAgent(input: string): Promise<string> {
   Logger.info("AGENT", "Invoking AI agent");
 
   const start = Date.now();
@@ -34,13 +28,9 @@ export async function invokeAgent(
 
     const duration = Date.now() - start;
 
-    Logger.success(
-      "AGENT",
-      `Execution completed in ${duration} ms`
-    );
+    Logger.success("AGENT", `Execution completed in ${duration} ms`);
 
-    const lastMessage =
-      response.messages[response.messages.length - 1];
+    const lastMessage = response.messages[response.messages.length - 1];
 
     let output: string;
 
@@ -53,18 +43,9 @@ export async function invokeAgent(
     Logger.info("AGENT", "Final Response:");
     Logger.info("ASSISTANT", output);
 
-    executionLog.endRun();
-
     return output;
   } catch (error) {
-    Logger.error(
-      "AGENT",
-      "Agent execution failed.",
-      error
-    );
-
-    executionLog.endRun();
-
+    Logger.error("AGENT", "Agent execution failed.", error);
     throw error;
   }
 }

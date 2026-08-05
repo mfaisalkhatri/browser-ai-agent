@@ -1,4 +1,5 @@
 import { Logger } from "./logger.js";
+import { executionSummary } from "./execution-summary.js";
 
 export interface ExecutionStep {
   step: number;
@@ -38,6 +39,7 @@ export class ExecutionLog {
     };
 
     this.steps.push(step);
+    executionSummary.record(success);
 
     Logger.info(
       "STEP",
@@ -67,21 +69,42 @@ export class ExecutionLog {
     }
   }
 
-  endRun(): void {
-    Logger.divider("Execution Summary");
+endRun(): void {
+  Logger.divider("Execution Summary");
 
-    for (const step of this.steps) {
-      Logger.info(
-        "SUMMARY",
-        `Step ${step.step}: ${step.tool} | ${step.success ? "SUCCESS" : "FAILED"} | ${step.durationMs} ms`
-      );
+  let passed = 0;
+  let failed = 0;
+
+  for (const step of this.steps) {
+    if (step.success) {
+      passed++;
+    } else {
+      failed++;
     }
 
     Logger.info(
       "SUMMARY",
-      `Total Steps: ${this.steps.length}`
+      `Step ${step.step}: ${step.tool} | ${
+        step.success ? "PASSED" : "FAILED"
+      } | ${step.durationMs} ms`
     );
   }
+
+  Logger.info(
+    "SUMMARY",
+    `Total Steps : ${this.steps.length}`
+  );
+
+  Logger.info(
+    "SUMMARY",
+    `Passed      : ${passed}`
+  );
+
+  Logger.info(
+    "SUMMARY",
+    `Failed      : ${failed}`
+  );
+}
 
   reset(): void {
     this.steps.length = 0;

@@ -7,7 +7,7 @@ import { Logger } from "../utils/logger.js";
 export const navigateTool = tool(
   async ({ url }) => {
     const start = Date.now();
-    Logger.info("TOOL: ", `navigate -> {url}`);
+    Logger.info("TOOL: ", `navigate -> ${url}`);
 
     const result = await browserService.goto(url);
 
