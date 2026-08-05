@@ -20,7 +20,7 @@ This project is designed as a modular foundation for building intelligent browse
 | Local LLM              | Ollama               |
 | Model                  | Qwen3:8b             |
 | Browser Automation     | Playwright           |
-| Browser Infrastructure | Browser Cloud        |
+| Browser Infrastructure | [Browser Cloud](https://www.testmuai.com/support/docs/what-is-browser-cloud/)        |
 | Validation             | Zod                  |
 | Environment Variables  | dotenv               |
 | CLI                    | Node.js Readline API |
@@ -38,46 +38,6 @@ This project is designed as a modular foundation for building intelligent browse
 * Screenshot support
 * Information extraction from web pages
 * Extensible architecture for additional tools
-
----
-
-## Project Structure
-
-```text
-src/
-│
-├── agent/
-│   ├── agent.ts
-│   └── prompt.ts
-│
-├── browser/
-│   ├── browser.ts
-│   ├── browser-instance.ts
-│   ├── browser-service.ts
-│   ├── session.ts
-│   └── types.ts
-│
-├── llm/
-│   └── model.ts
-│
-├── models/
-│   └── browser-result.ts
-│
-├── tools/
-│   ├── navigate-tool.ts
-│   ├── click-tool.ts
-│   ├── fill-tool.ts
-│   ├── press-tool.ts
-│   ├── extract-text-tool.ts
-│   ├── find-element-tool.ts
-│   ├── title-tool.ts
-│   ├── url-tool.ts
-│   ├── screenshot-tool.ts
-│   ├── close-browser-tool.ts
-│   └── index.ts
-│
-└── index.ts
-```
 
 ---
 
@@ -116,7 +76,6 @@ Create a `.env` file in the project root:
 
 ```env
 OLLAMA_MODEL=qwen3:8b
-
 LT_USERNAME=<your-lambdatest-username>
 LT_ACCESS_KEY=<your-lambdatest-access-key>
 ```
@@ -150,16 +109,20 @@ npm start
 
 ## Example Prompt
 
+The prompt needs to be added to the `prompt.txt` file.
+
 ```text
 Navigate to https://https://ecommerce-playground.lambdatest.io/
 Verify the Page Title
-END
 ```
 
 For multiline prompts, finish the input with:
 
 ```text
-END
+Navigate to https://ecommerce-playground.lambdatest.io/
+Enter "iPhone" into in the textbox with placeholder “Search for Products”
+Click on the “Search” button next to the search field, and Wait for the results page to load
+Verify the page title contains "iPhone"
 ```
 
 ---
@@ -175,6 +138,7 @@ END
 * Retrieve current URL
 * Capture screenshots
 * Locate elements using semantic locators
+* Get Page Content
 
 ---
 
