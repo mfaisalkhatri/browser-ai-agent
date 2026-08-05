@@ -6,11 +6,11 @@ import path from "node:path";
 import { invokeAgent } from "./agent/agent.js";
 import { browserService } from "./browser/browser-instance.js";
 import { Logger } from "./utils/logger.js";
+import { verifyOllama } from "./utils/ollama.js";
 
 async function readPrompt(): Promise<string> {
   const promptFile =
-    process.argv[2] ??
-    path.resolve(process.cwd(), "prompt.txt");
+    process.argv[2] ?? path.resolve(process.cwd(), "prompt.txt");
 
   Logger.info("APP", `Reading prompt from: ${promptFile}`);
 
@@ -36,9 +36,7 @@ function parseExecutionSteps(prompt: string): string[] {
       const start = matches[i].index! + matches[i][0].length;
 
       const end =
-        i + 1 < matches.length
-          ? matches[i + 1].index!
-          : normalized.length;
+        i + 1 < matches.length ? matches[i + 1].index! : normalized.length;
 
       const step = normalized.substring(start, end).trim();
 
@@ -76,11 +74,7 @@ async function shutdown(): Promise<void> {
     await browserService.close();
     Logger.success("APP", "Browser session closed");
   } catch (error) {
-    Logger.error(
-      "APP",
-      "Failed to close browser session",
-      error
-    );
+    Logger.error("APP", "Failed to close browser session", error);
   }
 }
 
@@ -108,10 +102,7 @@ async function main(): Promise<void> {
 
     const steps = parseExecutionSteps(prompt);
 
-    Logger.info(
-      "APP",
-      `Execution plan contains ${steps.length} step(s)`
-    );
+    Logger.info("APP", `Execution plan contains ${steps.length} step(s)`);
 
     for (let i = 0; i < steps.length; i++) {
       const step = steps[i];
@@ -121,6 +112,7 @@ async function main(): Promise<void> {
       Logger.info("STEP", step);
 
       try {
+        await verifyOllama();
         const response = await invokeAgent(`
 Execution Step ${i + 1} of ${steps.length}
 
@@ -139,11 +131,7 @@ Instructions:
         console.log(response);
         console.log();
       } catch (error) {
-        Logger.error(
-          "STEP",
-          `Step ${i + 1} failed`,
-          error
-        );
+        Logger.error("STEP", `Step ${i + 1} failed`, error);
         break;
       }
     }
@@ -156,17 +144,11 @@ Instructions:
 }
 
 main().catch(async (error) => {
-  Logger.error(
-    "APP",
-    "Unhandled application exception",
-    error
-  );
+  Logger.error("APP", "Unhandled application exception", error);
 
   try {
     await browserService.close();
-  } catch {
-    // Ignore cleanup errors
-  }
+  } catch {}
 
   process.exit(1);
 });
