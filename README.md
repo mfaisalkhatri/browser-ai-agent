@@ -55,7 +55,7 @@ This project is designed as a modular foundation for building intelligent browse
 Clone the repository:
 
 ```bash
-git clone <repository-url>
+git clone git@github.com:mfaisalkhatri/browser-ai-agent.git
 cd browser-ai-agent
 ```
 
@@ -80,9 +80,9 @@ OLLAMA_MODEL=qwen3:8b
 LLM_TEMPERATURE=0.2
 LT_USERNAME=<your-lambdatest-username>
 LT_ACCESS_KEY=<your-lambdatest-access-key>
-BROWSERCLOUD_PLATFORM_NAME=<platform name,e.g.Windows 11>
-BROWSERCLOUD_BROWSER_NAME=<Browser name, e.g Chrome>
-BROWSERCLOUD_BROWSER_VERSION=<Browser version, e.g. 149>
+BROWSERCLOUD_PLATFORM_NAME=<platform name>,e.g.Windows 11
+BROWSERCLOUD_BROWSER_NAME=<Browser name>, e.g Chrome
+BROWSERCLOUD_BROWSER_VERSION=<Browser version>, e.g. 149
 ```
 
 ---
@@ -122,7 +122,7 @@ The prompt needs to be added to the `prompt.txt` file.
 Navigate to https://https://ecommerce-playground.lambdatest.io/
 Verify the Page Title
 ```
-### Prompt Exampel 2:
+### Prompt Example 2:
 
 ```text
 Navigate to https://ecommerce-playground.lambdatest.io/
