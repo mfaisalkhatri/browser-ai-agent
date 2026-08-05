@@ -2,6 +2,7 @@ import "dotenv/config";
 
 import fs from "node:fs/promises";
 import path from "node:path";
+import { executionLog } from "./utils/execution-log.js";
 
 import { invokeAgent } from "./agent/agent.js";
 import { browserService } from "./browser/browser-instance.js";
@@ -95,6 +96,7 @@ async function main(): Promise<void> {
   });
 
   try {
+    executionLog.reset();
     const prompt = await readPrompt();
 
     Logger.divider("New Request");
@@ -137,6 +139,7 @@ Instructions:
     }
 
     Logger.success("APP", "Execution completed");
+    executionLog.endRun();
   } finally {
     await shutdown();
     Logger.info("APP", "Application stopped");
