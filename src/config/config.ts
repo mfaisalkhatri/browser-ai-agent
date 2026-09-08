@@ -1,4 +1,5 @@
 import "dotenv/config";
+import { Logger } from "../utils/logger.js";
 
 function getEnv(name: string): string {
   const value = process.env[name];
@@ -30,6 +31,24 @@ function getBrowserCloudCredentials() {
     username: getEnv("LT_USERNAME"),
     accessKey: getEnv("LT_ACCESS_KEY"),
   };
+}
+export function logStartupConfiguration(): void {
+  Logger.info("APP", `Browser Mode : ${config.browser.toUpperCase()}`);
+  Logger.info("APP", `Headless     : ${config.headless}`);
+
+  if (config.browser === "local") {
+    Logger.divider("Local Browser Configuration");
+    Logger.info("APP", `Browser    : Chromium`);
+  }
+  if (config.browser === "cloud") {
+    Logger.divider("Browser Cloud Configuration");
+    Logger.info("APP", `Platform   : ${config.platformName}`);
+    Logger.info("APP", `Browser    : ${config.browserName}`);
+    Logger.info("APP", `Version    : ${config.browserVersion}`);
+  }
+  Logger.divider("LLM Configuration");
+  Logger.info("APP", `Model      : ${config.ollamaModel}`);
+  Logger.info("APP", `Temperature: ${config.temperature}`);
 }
 
 export const config = {

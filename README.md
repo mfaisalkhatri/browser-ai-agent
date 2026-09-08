@@ -160,7 +160,6 @@ Verify the page title contains "iPhone"
 
 [TestMu AI Browser Cloud Cookbook](https://github.com/SparshKesari/browser-cloud-cookbook) - A collection of runnable examples and patterns for [TestMu AI Browser Cloud](https://www.testmuai.com/browser-cloud/) — scalable, headless browser sessions in the cloud that work with Playwright, Puppeteer, Selenium, and AI agent frameworks.
 
-
 ## :question: Need Assistance?
 
 - Discuss your queries by writing to me @ `mohammadfaisalkhatri@gmail.com`
