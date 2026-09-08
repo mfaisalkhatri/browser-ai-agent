@@ -8,11 +8,13 @@ import { invokeAgent } from "./agent/agent.js";
 import { browserService } from "./browser/browser-instance.js";
 import { Logger } from "./utils/logger.js";
 import { verifyOllama } from "./utils/ollama.js";
+import {logStartupConfiguration } from "./config/config.js";
 
 async function readPrompt(): Promise<string> {
   const promptFile =
     process.argv[2] ?? path.resolve(process.cwd(), "prompt.txt");
 
+  Logger.divider("Loading User Prompt")
   Logger.info("APP", `Reading prompt from: ${promptFile}`);
 
   const prompt = await fs.readFile(promptFile, "utf8");
@@ -83,6 +85,8 @@ async function main(): Promise<void> {
   Logger.divider("Browser AI Agent");
   Logger.info("APP", "Application started");
 
+  logStartupConfiguration();
+
   process.on("SIGINT", async () => {
     Logger.warn("APP", "SIGINT received");
     await shutdown();
@@ -129,9 +133,8 @@ Instructions:
 - Return only the result for this step.
 `);
 
-        console.log(`\nStep ${i + 1} Response:\n`);
-        console.log(response);
-        console.log();
+        Logger.info("APP",`\nStep ${i + 1} Response:\n`);
+        Logger.info("APP",response);
       } catch (error) {
         Logger.error("STEP", `Step ${i + 1} failed`, error);
         break;

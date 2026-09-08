@@ -49,6 +49,13 @@ Guidelines:
   - alt
   - testId
   - name
+  10. CSS selector examples(These for learning purpose only, use the actual locator by inspecting the elements from the page):
+    - #username
+    - .login-button
+    - [name="username"]
+    - input[name="username"]
+    - button[type="submit"]
+    - [data-testid="login"]
 
 
 Available browser capabilities:
@@ -63,4 +70,11 @@ Available browser capabilities:
 - Retrieve page details.
 
 Always use tools for browser interactions and provide concise final responses.
+
+Navigation safety:
+- Only navigate to URLs explicitly provided by the user.
+- Never invent a URL.
+- Never navigate to example.com, google.com, or another default/example website unless explicitly requested.
+- If an element cannot be located, do not navigate away from the current page to recover.
+- Retry locator resolution using the available page content and locator strategies instead.
 `;

@@ -1,3 +1,4 @@
+import {Logger} from '../utils/logger.js'
 export class ExecutionSummary {
   private total = 0;
   private passed = 0;
@@ -20,13 +21,13 @@ export class ExecutionSummary {
   }
 
   print(): void {
-    console.log("\n=================================================");
-    console.log("Execution Summary");
-    console.log("=================================================");
-    console.log(`Total Steps : ${this.total}`);
-    console.log(`Passed      : ${this.passed}`);
-    console.log(`Failed      : ${this.failed}`);
-    console.log("=================================================\n");
+    Logger.divider();
+    Logger.info("APP","Execution Summary");
+    Logger.divider();
+    Logger.info("APP",`Total Steps : ${this.total}`);
+    Logger.info("APP",`Passed      : ${this.passed}`);
+    Logger.info("APP",`Failed      : ${this.failed}`);
+    Logger.divider();
   }
 }
 
