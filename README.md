@@ -78,11 +78,19 @@ Create a `.env` file in the project root:
 ```env
 OLLAMA_MODEL=qwen3:8b
 LLM_TEMPERATURE=0.2
+BROWSER_MODE=cloud
 LT_USERNAME=<your-lambdatest-username>
 LT_ACCESS_KEY=<your-lambdatest-access-key>
 BROWSERCLOUD_PLATFORM_NAME=<platform name,e.g.Windows 11>
 BROWSERCLOUD_BROWSER_NAME=<Browser name, e.g Chrome>
 BROWSERCLOUD_BROWSER_VERSION=<Browser version, e.g. 149>
+```
+
+```env
+OLLAMA_MODEL=qwen3:8b
+LLM_TEMPERATURE=0.2
+BROWSER_MODE=local
+HEADLESS=false
 ```
 
 ---
