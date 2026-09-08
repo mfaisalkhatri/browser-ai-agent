@@ -155,18 +155,14 @@ export class LocatorResolver {
   // ------------------------------------------------------------------
 
   private async byCss(query: string): Promise<LocatorResolutionResult> {
-    if (
-      !query.startsWith("#") &&
-      !query.startsWith(".") &&
-      !query.startsWith("[")
-    ) {
+    try {
+      const locator = this.page.locator(query);
+
+      if (await this.isValid(locator)) {
+        return this.success(LocatorStrategy.CSS, query, locator, 30);
+      }
+    } catch {
       return this.failure();
-    }
-
-    const locator = this.page.locator(query);
-
-    if (await this.isValid(locator)) {
-      return this.success(LocatorStrategy.CSS, query, locator, 30);
     }
 
     return this.failure();
