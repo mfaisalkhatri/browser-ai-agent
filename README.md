@@ -75,6 +75,7 @@ ollama serve
 
 Create a `.env` file in the project root:
 
+### .env example for BROWSER_MODE - cloud. The tests will run on BrowserCloud
 ```env
 OLLAMA_MODEL=qwen3:8b
 LLM_TEMPERATURE=0.2
@@ -85,7 +86,7 @@ BROWSERCLOUD_PLATFORM_NAME=<platform name>,e.g.Windows 11
 BROWSERCLOUD_BROWSER_NAME=<Browser name>, e.g Chrome
 BROWSERCLOUD_BROWSER_VERSION=<Browser version>, e.g. 149
 ```
-
+### .env example for BROWSER_MODE - local. The tests will run on Local Chromium browser.
 ```env
 OLLAMA_MODEL=qwen3:8b
 LLM_TEMPERATURE=0.2
@@ -100,7 +101,6 @@ HEADLESS=false
 ```bash
 npm run build
 ```
-
 ---
 
 ## Run the Application
