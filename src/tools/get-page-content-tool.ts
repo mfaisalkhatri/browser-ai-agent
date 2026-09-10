@@ -39,7 +39,7 @@ export const getPageContentTool = tool(
   },
   {
     name: "get_page_content",
-    description:
-      "Inspect the current webpage and return structured information about visible interactive elements. Use this information to identify elements required by the user's task and then call the appropriate browser action tool such as click, fill, press, or navigate. Do not summarize or explain the page content to the user unless the user's task explicitly asks for page information.",
+      description:
+        "Observe the current webpage and return structured information about interactive elements. This is an internal observation step for browser automation. Use the returned element attributes to identify the target element and continue executing the user's task. Do not treat this tool as a reason to finish the task or provide a page summary.",
   }
 );
