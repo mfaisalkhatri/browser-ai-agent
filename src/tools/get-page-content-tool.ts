@@ -40,6 +40,6 @@ export const getPageContentTool = tool(
   {
     name: "get_page_content",
     description:
-      "Retrieve the visible text content and basic information from the current webpage to help identify elements and understand the page.",
+      "Inspect the current webpage and return structured information about visible interactive elements. Use this information to identify elements required by the user's task and then call the appropriate browser action tool such as click, fill, press, or navigate. Do not summarize or explain the page content to the user unless the user's task explicitly asks for page information.",
   }
 );

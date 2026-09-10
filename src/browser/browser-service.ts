@@ -192,139 +192,148 @@ export class BrowserService {
   }
 
   async getPageContent(): Promise<BrowserResult> {
-    await this.ensureSession();
+  await this.ensureSession();
 
-    try {
-      const page = this.session!.page;
+  try {
+    const page = this.session!.page;
 
-      const elements = await page.evaluate(() => {
-        function getLabel(element: Element): string | null {
+    const elements = await page.evaluate(() => {
+      const selectors = [
+        "input",
+        "button",
+        "textarea",
+        "select",
+        "a",
+        "[role]",
+        "[contenteditable]",
+      ];
+
+      const seen = new Set<Element>();
+
+      const nodes = selectors.flatMap((selector) =>
+        Array.from(document.querySelectorAll(selector)),
+      );
+
+      const elements = nodes
+        .filter((element) => {
+          if (seen.has(element)) {
+            return false;
+          }
+
+          seen.add(element);
+          return true;
+        })
+        .map((element) => {
           const htmlElement = element as HTMLElement;
+
+          let label: string | null = null;
 
           // <label for="id">
           if (htmlElement.id) {
-            const label = document.querySelector(
+            const labelElement = document.querySelector(
               `label[for="${CSS.escape(htmlElement.id)}"]`,
             );
-            if (label?.textContent?.trim()) {
-              return label.textContent.trim();
+
+            if (labelElement?.textContent?.trim()) {
+              label = labelElement.textContent.trim();
             }
           }
 
           // Wrapped by <label>
-          const parentLabel = htmlElement.closest("label");
-          if (parentLabel?.textContent?.trim()) {
-            return parentLabel.textContent.trim();
+          if (!label) {
+            const parentLabel = htmlElement.closest("label");
+
+            if (parentLabel?.textContent?.trim()) {
+              label = parentLabel.textContent.trim();
+            }
           }
 
-          return null;
-        }
+          const style = window.getComputedStyle(htmlElement);
 
-        function isVisible(element: HTMLElement): boolean {
-          const style = window.getComputedStyle(element);
-
-          return (
+          const visible =
             style.display !== "none" &&
             style.visibility !== "hidden" &&
             style.opacity !== "0" &&
-            element.getClientRects().length > 0
-          );
-        }
+            htmlElement.getClientRects().length > 0;
 
-        const selectors = [
-          "input",
-          "button",
-          "textarea",
-          "select",
-          "a",
-          "[role]",
-          "[contenteditable]",
-        ];
+          let value: string | null = null;
 
-        const seen = new Set<Element>();
+          if (
+            element instanceof HTMLInputElement ||
+            element instanceof HTMLTextAreaElement
+          ) {
+            value = element.value;
+          }
 
-        const nodes = selectors.flatMap((selector) =>
-          Array.from(document.querySelectorAll(selector)),
-        );
+          let disabled = false;
 
-        const elements = nodes
-          .filter((el) => {
-            if (seen.has(el)) {
-              return false;
-            }
+          if (
+            element instanceof HTMLButtonElement ||
+            element instanceof HTMLInputElement ||
+            element instanceof HTMLSelectElement ||
+            element instanceof HTMLTextAreaElement
+          ) {
+            disabled = element.disabled;
+          }
 
-            seen.add(el);
-            return true;
-          })
-          .map((el) => {
-            const element = el as HTMLElement;
+          return {
+            tag: htmlElement.tagName.toLowerCase(),
 
-            return {
-              tag: element.tagName.toLowerCase(),
+            role: element.getAttribute("role"),
 
-              role: element.getAttribute("role"),
+            type: element.getAttribute("type"),
 
-              type: element.getAttribute("type"),
+            id: htmlElement.id || null,
 
-              id: element.id || null,
+            name: element.getAttribute("name"),
 
-              name: element.getAttribute("name"),
+            label,
 
-              label: getLabel(element),
+            text:
+              htmlElement.innerText?.trim() ||
+              htmlElement.textContent?.trim() ||
+              "",
 
-              text:
-                element.innerText?.trim() || element.textContent?.trim() || "",
+            placeholder: element.getAttribute("placeholder"),
 
-              placeholder: element.getAttribute("placeholder"),
+            ariaLabel: element.getAttribute("aria-label"),
 
-              ariaLabel: element.getAttribute("aria-label"),
+            title: element.getAttribute("title"),
 
-              title: element.getAttribute("title"),
+            alt: element.getAttribute("alt"),
 
-              alt: element.getAttribute("alt"),
+            value,
 
-              value:
-                element instanceof HTMLInputElement ||
-                element instanceof HTMLTextAreaElement
-                  ? element.value
-                  : null,
+            href: element.getAttribute("href"),
 
-              href: element.getAttribute("href"),
+            testId:
+              element.getAttribute("data-testid") ??
+              element.getAttribute("data-test") ??
+              element.getAttribute("data-cy"),
 
-              testId:
-                element.getAttribute("data-testid") ??
-                element.getAttribute("data-test") ??
-                element.getAttribute("data-cy"),
+            visible,
 
-              visible: isVisible(element),
-
-              disabled:
-                element instanceof HTMLButtonElement ||
-                element instanceof HTMLInputElement ||
-                element instanceof HTMLSelectElement ||
-                element instanceof HTMLTextAreaElement
-                  ? element.disabled
-                  : false,
-            };
-          });
-
-        return {
-          url: window.location.href,
-          title: document.title,
-          totalElements: elements.length,
-          elements,
-        };
-      });
+            disabled,
+          };
+        });
 
       return {
-        success: true,
-        message: "Interactive page snapshot retrieved.",
-        data: elements,
+        url: window.location.href,
+        title: document.title,
+        totalElements: elements.length,
+        elements,
       };
-    } catch (error) {
-      return this.handleError(error);
-    }
+    });
+
+    return {
+      success: true,
+      message: "Interactive page snapshot retrieved.",
+      data: elements,
+    };
+  } catch (error) {
+    return this.handleError(error);
   }
+}
 
   async findElement(description: string): Promise<
     BrowserResult<{
