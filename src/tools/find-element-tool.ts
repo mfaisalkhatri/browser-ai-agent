@@ -40,9 +40,8 @@ export const findElementTool = tool(
   },
   {
     name: "find_element",
-    description:
-      "Find an element on the current page using a natural language description. The browser service automatically resolves the best locator strategy (role, label, placeholder, alt text, title, test id, text, CSS, or XPath).",
-    schema: z.object({
+description:
+  "Find an element on the current page using a natural language description. The browser service automatically resolves the best locator strategy (role, label, placeholder, alt text, title, test id, text, CSS, or XPath). When get_page_content has been called, use its returned data to identify the target element and use the exact matching attribute value when resolving the element."    schema: z.object({
       description: z
         .string()
         .describe("Natural language description of the element to locate."),
