@@ -39,7 +39,7 @@ export const getPageContentTool = tool(
   },
   {
     name: "get_page_content",
-    description:
-      "Retrieve the visible text content and basic information from the current webpage to help identify elements and understand the page.",
+      description:
+        "Observe the current webpage and return structured information about interactive elements. This is an internal observation step for browser automation. Use the returned element attributes to identify the target element using find_element tool and continue executing the user's task. Do not treat this tool as a reason to finish the task or provide a page summary.",
   }
 );
